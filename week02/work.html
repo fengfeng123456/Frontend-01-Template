@@ -8,9 +8,11 @@ function checkNumericLiteral(Str){
 // 第二题 UTF-8 Encoding 的函数
 function utf8Encoding(str){
   var codes = '';
-  [].forEach.call(str, function(item, index){
-    codes+='\\x'+str.charCodeAt(index).toString(16).toUpperCase()
-  })
+
+  for (var value of str) {
+    codes+='\\x'+value.codePointAt(0).toString(16).toUpperCase()
+  }
+
   return codes
 }
 
@@ -43,7 +45,7 @@ var str = ['.22', '0.2', '1.2e12', '.3938e11', '.2e2', '3e4', '55.', '55', '4.6'
 })
 
 // 第二题 测试
-utf8Encoding('Foo') // \x46\x6F\x6F
+console.log(utf8Encoding('Foo𠮷')) // \x46\x6F\x6F\x20BB7
 
 // 第三题 测试
 var testStrArr=['"333这就是 不是"', "'fffff'", "'fds;/n", "'\udddd'", '"\uAAAA"', '"\uFFFF"', '"\u0000"', '"\u000A"', '"\u2028"','"/"','"""','"\u0022"']
