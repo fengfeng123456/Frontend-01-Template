@@ -1,0 +1,55 @@
+<script>
+// 第一题 匹配所有 Number 直接量
+function checkNumericLiteral(Str){
+  var reg = /^(0(x|X)[0-9A-F]+)|(((0|([1-9][0-9]*))|(0|([1-9][0-9]*)\.[0-9]*)|(\.[0-9]+))((e|E)(\+|-)?[0-9]+)?)$/
+  return reg.test(Str)
+}
+
+// 第二题 UTF-8 Encoding 的函数
+function utf8Encoding(str){
+  var codes = '';
+  [].forEach.call(str, function(item, index){
+    codes+='\\x'+str.charCodeAt(index).toString(16).toUpperCase()
+  })
+  return codes
+}
+
+// 第三题 匹配所有的字符串直接量
+// 这里"but not one of"未能找到js中对应正则语句进行书写；所以在解析下面写法时，会出现意外
+// NonEscapeCharacter:: 
+//    SourceCharacter but not one of EscapeCharacter or LineTerminator
+function checkStringLiteral(Str){
+  var reg =
+  /(^"(([(\u0000-\u0009)\u000B\u000C(\u000E-\u0021)(\u0023-\u002E)(\u0030-\u2027)(\u202A-\uFFFF)])|(\\(0|(x[0-9a-fA-F]{2})|(u[0-9a-fA-F]{4})|(('|"|\\|b|f|n|r|t|v)|([^(\u000A)(\u000D)(\u2028)(\u2029)'"\\bfnrtv0123456789xu]))))|(\\(\u000A)(\u000D)(\u2028)(\u2029)(\u000D\u000A)))*"$)|(^'(([(\u0000-\u0009)\u000B\u000C(\u000E-\u0021)(\u0023-\u002E)(\u0030-\u2027)(\u202A-\uFFFF)])|(\\(0|(x[0-9a-fA-F]{2})|(u[0-9a-fA-F]{4})|(('|"|\\|b|f|n|r|t|v)|([^(\u000A)(\u000D)(\u2028)(\u2029)'"\\bfnrtv0123456789xu]))))|(\\(\u000A)(\u000D)(\u2028)(\u2029)(\u000D\u000A)))*'$)/
+  return reg.test(Str)
+} 
+
+// 第一、第三题，做了思维导图，见文件夹图片
+
+
+
+
+
+
+
+
+
+// 第一题 测试
+var str = ['.22', '0.2', '1.2e12', '.3938e11', '.2e2', '3e4', '55.', '55', '4.6', '.5', '.666',
+    '.5555','0','0b23','0o9','.', '.e', '1.e', 'e', '2e','0x11', '0x21', '0x21111111111', '0x23', '0x9', '0xFF','0xPP']
+    str.forEach(function (item, index) {
+  var result = checkNumericLiteral(item)
+  if (!result) console.log('checkNumericLiteral', index, item)
+})
+
+// 第二题 测试
+utf8Encoding('Foo') // \x46\x6F\x6F
+
+// 第三题 测试
+var testStrArr=['"333这就是 不是"', "'fffff'", "'fds;/n", "'\udddd'", '"\uAAAA"', '"\uFFFF"', '"\u0000"', '"\u000A"', '"\u2028"','"/"','"""','"\u0022"']
+testStrArr.forEach(function (item, index) {
+  var result = checkStringLiteral(item)
+  if (!result) console.log('checkStringLiteral', index, item)
+})
+
+</script>
