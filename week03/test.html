@@ -1,0 +1,56 @@
+<script>
+function convertStringToNumber(string, x){
+
+
+  
+  return number
+}
+
+// var num = convertStringToNumber("10.0123")
+// console.log(num)
+// 11进制到
+
+var stringNum = [
+  undefined,undefined,undefined,
+  undefined,undefined,undefined,
+  undefined,undefined,undefined,
+  undefined,'a','b','c','d','e',
+  'f','g','h','i','g','k','l','m',
+  'n','o','p','q','r','s','t','u',
+  'v','w','x','y','z'
+  ]
+
+function convertNumberToString(number, x){
+    if (arguments.length < 2) x = 10
+    var integer = Math.floor(number)
+    var fraction = number-integer
+    var string = ''
+    while(integer > 0) {
+      var num = integer % x
+      if (num > 9) {
+        string =stringNum[num]+string;
+      } else {
+        string =String(num)+string;
+      }
+      integer = Math.floor(integer / x)
+    }
+
+    string += '.'
+    while(fraction < 1&&fraction>0) {
+      fraction = fraction * x
+      integer = Math.floor(fraction)
+      if (integer > 9) {
+        string += stringNum[integer]
+      }else{
+        string += String(integer)
+      }
+
+      fraction -= integer
+    }
+
+    return string
+}
+
+var string = convertNumberToString(678.677, 16)
+console.log(string)
+</script>
