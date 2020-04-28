@@ -1,28 +1,102 @@
 <script>
-function handleENumber(string){
+function convertStringToNumber(string, x) {
+  if (arguments.length < 2) x = 10
 
+  if (string === 'NaN') return NaN
+  if (string === 'Infinity') return Infinity
+  if (string === '-Infinity') return -Infinity
+  if (string === '-0') return -0
+  if (string === '0') return 0
+
+  string = handleENumber(string)
+  var chars = string.split('');
+  var number = 0;
+
+  var i = 0
+  var numberTans = {
+    A: '1',
+    B: '2',
+    C: '3',
+    D: '4',
+    E: '5',
+    F: '6'
+  }
+
+  // 思路：
+  // string 其他进制先转成十进制，再从十进制转成x其他进制
+
+  var mark = string.slice(0, 2)
+
+  var isEight = mark === '0o' || mark === '0O'
+  var isBinary = mark === '0b' || mark === '0B'
+  var isHex = mark === '0x' || mark === '0X'
+
+  if ((isEight&&x!==8) || (isBinary&&x!==2) || (isHex&&x!==16)) throw new Error('字符串与进制不相符')
+
+  // 基数
+  var base = isEight ? 8 : isBinary ? 2 : isHex ? 16 : x
+
+
+
+  // 取出有用数字
+  if (isEight || isBinary || isHex) {
+    chars = chars.slice(2)
+  }
+
+  // 处理非小数部分
+  while (i < chars.length && chars[i] != '.') {
+    var currentChar = chars[i];
+    var currentNumber = 0
+
+    number = number * base;
+
+    if (numberTans[currentChar]) {
+      currentNumber = numberTans[currentChar].codePointAt(0) - '0'.codePointAt(0) + 9;
+    } else {
+      currentNumber = chars[i].codePointAt(0) - '0'.codePointAt(0);
+    }
+
+    if (currentNumber >= base) throw new SyntaxError('Invalid or unexpected token')
+
+    number += currentNumber
+    i++;
+  }
+  if (chars[i] == '.') {
+    i++;
+  }
+  var fraction = 1;
+  // 小数部分不会有a-f出现
+  while (i < chars.length) {
+    fraction = fraction / base;
+    number += (chars[i].codePointAt(0) - '0'.codePointAt(0)) * fraction;
+    i++;
+  }
+
+  return number
+}
+function handleENumber(string){
   var isE = /^(((0|([1-9][0-9]*))|(0|([1-9][0-9]*)\.[0-9]*)|(\.[0-9]+))(e|E)[0-9]+)$/.test(string)
   if (isE) {
     var fractionIndex = string.indexOf('.')
     var eIndex = string.indexOf('e')
-    // e?????
+    // e之后部分
     var eNum = Number(string.slice(eIndex+1))
     
     var stringDeleteE = string.slice(0, eIndex)
 
-    // ????
+    // 希望的长度
     var wantStringLength = fractionIndex + eNum
 
-    // ??e?????????
+    // 去掉e之后的内容，现有的长度
     var lenTotal = eIndex - 1
 
     string = stringDeleteE.replace('.', '')
 
     if (wantStringLength > lenTotal) {
-      // ?0
+      // 补0
       string = string.padEnd(wantStringLength, '0')
     } else if(wantStringLength < lenTotal) {
-      // ??????
+      // 移动.
       string = string.slice(0,fractionIndex+eNum)+'.'+string.slice(fractionIndex+eNum)
     }
     
@@ -47,6 +121,13 @@ var stringNum = [
 
 function convertNumberToString(number, x){
     if (arguments.length < 2) x = 10
+
+    if(number === NaN) return 'NaN'
+    if(number === +0 || number === -0) return '0'
+    if(number<0) return '-' + convertNumberToString(-number, x)
+    if(number === Infinity) return 'Infinity'
+
+
     var integer = Math.floor(number)
     var fraction = number-integer
     var string = ''
@@ -60,7 +141,7 @@ function convertNumberToString(number, x){
       integer = Math.floor(integer / x)
     }
 
-    string += '.'
+    if (fraction < 1&&fraction>0) string += '.'
     while(fraction < 1&&fraction>0) {
       fraction = fraction * x
       integer = Math.floor(fraction)
