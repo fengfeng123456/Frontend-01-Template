@@ -1,9 +1,34 @@
 <script>
-function convertStringToNumber(string, x){
+function handleENumber(string){
 
+  var isE = /^(((0|([1-9][0-9]*))|(0|([1-9][0-9]*)\.[0-9]*)|(\.[0-9]+))(e|E)[0-9]+)$/.test(string)
+  if (isE) {
+    var fractionIndex = string.indexOf('.')
+    var eIndex = string.indexOf('e')
+    // e?????
+    var eNum = Number(string.slice(eIndex+1))
+    
+    var stringDeleteE = string.slice(0, eIndex)
 
+    // ????
+    var wantStringLength = fractionIndex + eNum
+
+    // ??e?????????
+    var lenTotal = eIndex - 1
+
+    string = stringDeleteE.replace('.', '')
+
+    if (wantStringLength > lenTotal) {
+      // ?0
+      string = string.padEnd(wantStringLength, '0')
+    } else if(wantStringLength < lenTotal) {
+      // ??????
+      string = string.slice(0,fractionIndex+eNum)+'.'+string.slice(fractionIndex+eNum)
+    }
+    
+  }
   
-  return number
+  return string
 }
 
 // var num = convertStringToNumber("10.0123")
