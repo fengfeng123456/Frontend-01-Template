@@ -1,12 +1,26 @@
 <script>
+// 参考ECMA规范7.1.4 ToNumber
 function convertStringToNumber(string, x) {
   if (arguments.length < 2) x = 10
 
+  // 第一步 这里首先要判断string是否符合 StringNumericLiteral，不符合返回NaN
+  // 该正则省略...
+
+  // 第二步 转换
+
+  // 根据规范7.1.4.1.1 进行判断
+  if (string === '') return 0
   if (string === 'NaN') return NaN
-  if (string === 'Infinity') return Infinity
-  if (string === '-Infinity') return -Infinity
+  // 10e10000 结果为 Infinity
+  if (string === 'Infinity') return 10e10000
+  if (string === '-Infinity') return -10e10000
   if (string === '-0') return -0
   if (string === '0') return 0
+
+  // 其他规范处理还有 StrUnsignedDecimalLiteral等，待以后深究，这里不做处理
+
+  // 对于e的处理，规范 “DecimalDigits.ExponentPart is the MV of DecimalDigits times 10ℝe, where e is the MV of ExponentPart.”
+  // 这里直接把e去掉 转成没有e的情况
 
   string = handleENumber(string)
   var chars = string.split('');
@@ -105,8 +119,10 @@ function handleENumber(string){
   return string
 }
 
-// var num = convertStringToNumber("10.0123")
-// console.log(num)
+var num = convertStringToNumber("10.0123")
+var num1 = convertStringToNumber("10.0123e9")
+var num2 = convertStringToNumber(".0123e6")
+console.log(num, num1, num2)
 // 11进制到
 
 var stringNum = [
@@ -118,10 +134,11 @@ var stringNum = [
   'n','o','p','q','r','s','t','u',
   'v','w','x','y','z'
   ]
-
+// 参考ECMA规范 “6.1.6.1.20 Number::toString”
 function convertNumberToString(number, x){
     if (arguments.length < 2) x = 10
 
+    // 这里的判断 符合规范 “6.1.6.1.20 Number::toString” 1-4；5-10条规则不太懂，以后深究
     if(number === NaN) return 'NaN'
     if(number === +0 || number === -0) return '0'
     if(number<0) return '-' + convertNumberToString(-number, x)
