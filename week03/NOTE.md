@@ -1,6 +1,6 @@
 ## 总结
 
-https://www.yuque.com/fenfen-wqkyh/fma1gv/wgwr2l/edit
+https://www.yuque.com/fenfen-wqkyh/fma1gv/wgwr2l
 
 
 
@@ -57,4 +57,4 @@ https://www.yuque.com/fenfen-wqkyh/fma1gv/wgwr2l/edit
 6. 模块的 namespace 对象：特殊的地方非常多，跟一般对象完全不一样，尽量只用于 import 吧。
 7. Object.prototype：作为所有正常对象的默认原型，不能再给它设置原型了。`Object.setPrototype(Object.prototype, {}) //报错`
 
-> 对应内容来自winter老师的《重学前端》-JavaScript对象：你知道全部的对象分类吗？
+> 对应内容来自winter老师的《重学前端》-"JavaScript对象：你知道全部的对象分类吗？"
