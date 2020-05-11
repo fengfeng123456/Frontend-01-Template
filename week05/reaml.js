@@ -2,12 +2,57 @@
 // 作业：56:00
 let set = new Set()
 let globalProperties = [
-  "RangeError",
-  "eval",
-  "DataView",
-  "Set",
-  "Map",
-  "Math"
+  // 'globalThis',
+  'eval',
+  'isFinite',
+  'isNaN',
+  'parseFloat',
+  'parseInt',
+  'decodeURI',
+  'decodeURIComponent',
+  'encodeURI',
+  'encodeURIComponent',
+  'Array',
+  'Date',
+  'RegExp',
+  'Promise',
+  'Proxy',
+  'Map',
+  'WeakMap',
+  'Set',
+  'WeakSet',
+  'Function',
+  'Boolean',
+  'String',
+  'Number',
+  'Symbol',
+  'Object',
+  'BigInt',
+  'BigInt64Array',
+  'BigUint64Array',
+  'Error',
+  'EvalError',
+  'RangeError',
+  'ReferenceError',
+  'SyntaxError',
+  'TypeError',
+  'URIError',
+  'ArrayBuffer',
+  'SharedArrayBuffer',
+  'DataView',
+  'Float32Array',
+  'Float64Array',
+  'Int8Array',
+  'Int16Array',
+  'Int32Array',
+  'Uint8Array',
+  'Uint16Array',
+  'Uint32Array',
+  'Uint8ClampedArray',
+  'Atomics',
+  'JSON',
+  'Math',
+  'Reflect'
 ]
 
 var queue = []
@@ -15,7 +60,7 @@ var queue = []
 for(var p of globalProperties) {
   queue.push({
     path: [p],
-    object: globalThis[p]
+    object: this[p]
   })
 }
 
@@ -54,4 +99,6 @@ while(queue.length) {
 
   }
 }
+
+
 

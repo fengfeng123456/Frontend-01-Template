@@ -28,7 +28,15 @@ https://www.yuque.com/fenfen-wqkyh/fma1gv/wgwr2l
 
 9.4.4 Arguments Exotic Objects
 
+    // 最后与变量混在一起
+
     [[GetOwnProperty]]  [[DefineOwnProperty]] [[Get]] [[Set]] [[Delete]]
+
+    (function(a){
+        a=2
+        var args = arguments
+        console.log(args[0])    // 2
+    })(2)
 
 9.4.5 Integer-Indexed Exotic Objects
 
