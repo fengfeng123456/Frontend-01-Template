@@ -60,17 +60,20 @@ var queue = []
 for(var p of globalProperties) {
   queue.push({
     path: [p],
-    object: this[p]
+    object: globalThis[p]
   })
 }
 
 let current;
 
+let result = new Set()
+
 while(queue.length) {
   current = queue.shift()
-  console.log(current.path.join('.'))
+  // console.log(current.path.join('.'))
   if (set.has(current.object)) continue;
   set.add(current.object)
+  result.add(current.path.join('.'))
 
   // 为什么不是这样？？？
   // var pass= current.object !== null && typeof current.object === 'object' || typeof current.object === 'function'
@@ -100,5 +103,7 @@ while(queue.length) {
   }
 }
 
-
+export {
+  result as date
+}
 
