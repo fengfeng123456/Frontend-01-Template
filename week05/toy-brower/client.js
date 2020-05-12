@@ -216,7 +216,6 @@ ${this.bodyText}`
         if(parser.isFinished) {
           resolve(parser.responce)
         }
-        // resolve(data)
         connection.end();
       });
       connection.on('error', err => {
@@ -226,10 +225,6 @@ ${this.bodyText}`
   }
 }
 
-class Response {
-  // 根据Transfer-Encoding：chunked,来处理body数据
-
-}
 
 void async function(){
   let request = new Request({
@@ -243,8 +238,6 @@ void async function(){
       name: 'fengfeng'
     }
   })
-  
-  // console.log(request.toString())
   
   let response = await request.send()
 

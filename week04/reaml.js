@@ -1,5 +1,4 @@
 // 18.1 Value Properties of the Global Object
-// 作业：56:00
 let set = new Set()
 let globalProperties = [
   // 'globalThis',
