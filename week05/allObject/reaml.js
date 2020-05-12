@@ -102,6 +102,6 @@ while(queue.length) {
 }
 
 export {
-  result as date
+  result as data
 }
 
