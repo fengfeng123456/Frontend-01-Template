@@ -1,5 +1,5 @@
 const net = require('net');
-
+const parser = require('./parser.js')
 
 class ResponseParser {
   constructor(){
@@ -112,7 +112,7 @@ class TrunkedBodyParse{
     this.current = this.WAITING_LENGTH
   }
   receiveChar(char){
-    console.log(JSON.stringify(char))
+    // console.log(JSON.stringify(char))
 
     if (this.current === this.WAITING_LENGTH){
       if (char === '\r') {
@@ -243,7 +243,9 @@ void async function(){
   
   let response = await request.send()
 
-  console.log(response)
+  // console.log(response)
+
+  let dom = parser.parserHtml(response.body)
 
 }()
 
