@@ -247,6 +247,7 @@ void async function(){
 
   let dom = parser.parserHtml(response.body)
 
+  console.log(JSON.stringify(dom, null, '  '))
 }()
 
 

@@ -15,7 +15,7 @@ let currentTextNode = null
 let rules = []
 function addCSSRules(text) {
   var ast = css.parse(text)
-  console.log(JSON.stringify(ast, null, "   "))
+  // console.log(JSON.stringify(ast, null, "   "))
   rules.push(...ast.stylesheet.rules)
 }
 
@@ -28,6 +28,8 @@ function match(element, selector) {
     if(attr && attr.value === selector.replace('#',''))
       return true;
   } else if (selector.charAt(0) == '.') {
+    // 1. 实现复合选择器
+    // 2. 补全空格的class 逻辑 class = 'item active'
     var attr = element.attributes.filter(attr => attr.name === 'class')[0]
     if(attr && attr.value === selector.replace('.', ''))
       return true;
@@ -37,6 +39,7 @@ function match(element, selector) {
   }
 }
 
+// 解决优先级
 function specificity(selector) {
   var p = [0,0,0,0]
   var selectorParts = selector.split(' ')
@@ -77,9 +80,13 @@ function computeCSS(element) {
     // 拆选择器 
     var selectorParts = rule.selectors[0].split(' ').reverse();
 
+    // element, selectorParts[0]匹配当前元素
     if(!match(element, selectorParts[0]))
       continue;
 
+    let matched = false;
+
+    // ！！匹配父级元素；j被循环完，代表匹配上了
     var j = 1;
     for(var i = 0; i < elements.length; i++) {
       if (match(elements[i], selectorParts[j])) {
@@ -90,6 +97,7 @@ function computeCSS(element) {
       matched = true;
 
     if(matched) {
+      // 如果匹配到，要加入到规则中
       var sp = specificity(rule.selectors[0]);
       var computedStyle = element.computedStyle;
       for (var declaration of rule.declarations) {
@@ -387,5 +395,5 @@ module.exports.parserHtml = function parserHtml(html) {
     state = state(c)
   }
   state = state(EOF)
-  console.log(stack[0])
+  return stack[0]
 }
