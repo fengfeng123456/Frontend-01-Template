@@ -3,10 +3,27 @@
 ## 有限状态机
   重要的是“机”
 
-  computedCSS在哪里调用？
+* 每一个状态都是一个机器
+* 每一个机器知道下一个状态
 
-  把style写在body中，百分百会实现重绘
+## 请求页面到渲染页面流程
 
-  csscomputing 最多10ms；不用过多关注；
+1. URL -http
+2. HTML -parse
+3. DOM -computing
+4. DOM With CSS -layout
+5. DOM With position -render
+6. Bitmap
 
-  浏览器一定是先获取规则，再匹配选择器；
+## HTML解析过程逻辑
+
+1. 利用状态机，解析HTML文本，形成一个DOM树
+2. 创建状态机
+3. 解析标签
+4. 创建元素
+5. 处理属性
+6. 构建DOM树
+7. 处理文本节点
+
+## CSS 计算
+
