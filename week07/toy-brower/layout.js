@@ -125,7 +125,7 @@ function layout(element) {
 
   var isAutoMainSize = false;
 
-  // 尺寸设置为空或者auto  
+  // 父尺寸设置为空或者auto  
   if(!style[mainSize]) {  // auto sizing
     elementStyle[mainSize] = 0;
     for(var i=0;i<items.length;i++){
@@ -185,7 +185,10 @@ function layout(element) {
     flexLine.crossSpace = crossSpace;
   }
 
+  // 开始处理主轴
+  // 没有剩余空间，进行缩放处理
   if(mainSpace < 0) {
+    // overflow (happens only if container is single line),scale every item
     var scale = style[mainSize] / (style[mainSize] - mainSpace);
     var currentMain = mainBase;
     for(var i=0;i<items.length;i++){
@@ -198,11 +201,14 @@ function layout(element) {
 
       itemStyle[mainSize] = itemStyle[mainSize] * scale;
 
+      // 计算每一个item的开始和结束的位置
       itemStyle[mainStart] = currentMain;
       itemStyle[mainEnd] = itemStyle[mainStart] + mainSign * itemStyle[mainSize];
       currentMain = itemStyle[mainEnd];
     }
   } else {
+    // flex是多行
+    // process each flex line
     flexLines.forEach(function(items){
       var mainSpace = items.mainSpace;
       var flexTotal = 0;
@@ -217,7 +223,11 @@ function layout(element) {
       }
 
       if (flexTotal > 0){
+        // 子元素有flex
+        // There is flexible flex items
         var currentMain = mainBase;
+
+        // 计算出所有的主轴尺寸
         for(var i=0; i<items.length; i++){
           var item = items[i];
           var itemStyle = getStyle(item);
@@ -230,6 +240,8 @@ function layout(element) {
           currentMain = itemStyle[mainEnd];
         }
       } else {
+        // 子元素没有flex，识别父元素的justifyContent属性
+        // There is *NO* flexible flex items, which means,justifyContent shoud work
         if(style.justifyConent === 'flex-start') {
           var currentMain = mainBase;
           var step = 0;
@@ -250,7 +262,7 @@ function layout(element) {
           var step = mainSpace/items.length * mainSign;
           var currentMain = step / 2 + mainBase;
         }
-
+        // currentMain元素起始点
         for (var i=0;i<items.length;i++){
           var item = items[i];
           itemStyle[mainStart, currentMain];
@@ -261,8 +273,11 @@ function layout(element) {
     })
   }
 
+  // 开始计算交叉轴
+  // align-items, slign-self
   var crossSpace;
 
+  // 父元素没有高度
   if(!style[crossSize]){  // auto sizing
     crossSpace = 0;
     elementStyle[crossSize] = 0;
@@ -338,7 +353,7 @@ function layout(element) {
       if(align === 'stretch') {
         itemStyle[crossStart] = crossBase;
         itemStyle[crossEnd] = crossBase + crossSign*((itemStyle[crossSize] !==null && itemStyle[crossSize] !== (void 0))?
-        itemStyle[crossSize]:lineCrossSize;
+        itemStyle[crossSize]:lineCrossSize)
 
         itemStyle[crossSize] = crossSign * (itemStyle[crossEnd]-itemStyle[crossStart])
 
