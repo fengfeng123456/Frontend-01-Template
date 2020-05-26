@@ -125,7 +125,7 @@ function layout(element) {
 
   var isAutoMainSize = false;
 
-  // 父尺寸设置为空或者auto  
+  // 尺寸设置为空或者auto  父元素的mainSize为子元素的的总和
   if(!style[mainSize]) {  // auto sizing
     elementStyle[mainSize] = 0;
     for(var i=0;i<items.length;i++){
@@ -140,6 +140,7 @@ function layout(element) {
   var flexLine = [];
   var flexLines = [flexLine];
 
+  // 剩余空间，主轴和交叉轴
   var mainSpace = elementStyle[mainSize];
   var crossSpace = 0;
 
@@ -151,29 +152,38 @@ function layout(element) {
       itemStyle[mainSize] = 0;
     }
 
+    // item的样式有flex，就代表可伸缩，所以不管剩余多少空间，他都能保持在一行
     if(itemStyle.flex){
       flexLine.push(item);
+      // nowrap保持在一行
     }else if(style.flexWrap === 'nowrap' && isAutoMainSize) {
       mainSpace -= itemStyle[mainSize];
       if(itemStyle[crossSize] !== null && itemStyle[crossSize] !==(void 0))
         crossSpace = Math.max(crossSpace, itemStyle[crossSize]);
       flexLine.push(item);
     } else {
+      // 如果item的尺寸大于父容器，就让子的尺寸等于父尺寸
       if(itemStyle[mainSize] > style[mainSize]) {
         itemStyle[mainSize] = style[mainSize];
       }
+      // 当前主轴剩余空间不足以放下一个子item，就另起一行；
+      // 能够放下item，就把该item放入该行
       if(mainSpace<itemStyle[mainSize]) {
         flexLine.mainSpace = mainSpace;
         flexLine.crossSpace = crossSpace;
+        // 创建一个新行
         flexLine = [item];
+        // 把新行放到flexLines中
         flexLines.push(flexLine);
         mainSpace = style[mainSize];
         crossSpace = 0;
       } else {
         flexLine.push(item);
       }
+      // crossSpace为交叉轴上最大的高度
       if(itemStyle[crossSize] !== null && itemStyle[crossSize] !== (void 0))
         crossSpace = Math.max(crossSpace, itemStyle[crossSize]);
+      // mainSpace获得剩余空间
       mainSpace -= itemStyle[mainSize];
     }
   }
