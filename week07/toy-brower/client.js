@@ -249,7 +249,7 @@ void async function(){
 
   let dom = parser.parserHtml(response.body)
 
-  console.log(dom)
+  // console.log(dom)
 
   let viewport = images(800, 600);
 
