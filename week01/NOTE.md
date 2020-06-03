@@ -31,3 +31,8 @@
 
   目标》现状》方案》实施》结果》目标
 
+* css标准
+
+  https://www.w3.org/TR/CSS21/grammar.html#q25.0
+  https://www.w3.org/TR/css-syntax-3/#placement
+

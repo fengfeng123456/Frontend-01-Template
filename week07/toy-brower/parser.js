@@ -1,7 +1,10 @@
 // class parserHtml{
 
 // }
-const css = require('css')
+const Tokenizer = require('css-selector-tokenizer');
+const _ =require('lodash')
+
+const css = require('css');
 const EOF = Symbol('EOF');
 
 const layout = require('./layout.js')
@@ -21,25 +24,115 @@ function addCSSRules(text) {
   rules.push(...ast.stylesheet.rules)
 }
 
+// function match(element, selector) {
+//   if (!selector || !element.attributes)
+//     return false;
+
+//   if (selector.charAt(0) == '#') {
+//     var attr = element.attributes.filter(attr => attr.name === 'id')[0]
+//     if(attr && attr.value === selector.replace('#',''))
+//       return true;
+//   } else if (selector.charAt(0) == '.') {
+//     // 1. 实现复合选择器
+//     // 2. 补全空格的class 逻辑 class = 'item active'
+//     var attr = element.attributes.filter(attr => attr.name === 'class')[0]
+//     if(attr && attr.value === selector.replace('.', ''))
+//       return true;
+//   } else {
+//     if (element.tagName === selector)
+//       return true;
+//   }
+// }
+
 function match(element, selector) {
   if (!selector || !element.attributes)
-    return false;
+  return false;
+  let parseRules = Tokenizer.parse(selector)
 
-  if (selector.charAt(0) == '#') {
-    var attr = element.attributes.filter(attr => attr.name === 'id')[0]
-    if(attr && attr.value === selector.replace('#',''))
-      return true;
-  } else if (selector.charAt(0) == '.') {
-    // 1. 实现复合选择器
-    // 2. 补全空格的class 逻辑 class = 'item active'
-    var attr = element.attributes.filter(attr => attr.name === 'class')[0]
-    if(attr && attr.value === selector.replace('.', ''))
-      return true;
-  } else {
-    if (element.tagName === selector)
-      return true;
+  let ruleGroup = parseRules.nodes
+  let result = true;
+  // 
+  for(let j = 0; j < ruleGroup.length; j++) {
+    let node = ruleGroup[j]
+    let currentNode = node.nodes
+    let i = currentNode.length-1
+    let currentParentIndex = -1
+    let isParent = false
+    let copyElement = _.cloneDeep(element)
+    for(;i>=0;i--){
+      var currentRule = currentNode[i]
+      var type = currentRule.type
+      if (!copyElement) return false;
+      var typeFn = {
+        id: () => {
+          var attr = copyElement.attributes.filter(attr => attr.name === 'id')[0]
+          if(!attr || (attr && attr.value !== currentRule.name)){
+            if (isParent) {
+              copyElement = copyElement.parent
+              while(copyElement&&!copyElement.attributes) {
+                if (!copyElement) return false;
+                copyElement = copyElement.parent
+              }
+              i = currentParentIndex
+            } else {
+              return false;
+            }
+          }
+          return true;
+        },
+        class: () => {
+          var attr = copyElement.attributes.filter(attr => attr.name === 'class')[0]
+          if(!attr || (attr && attr.value !== currentRule.name)){
+            if (isParent) {
+              copyElement = copyElement.parent
+              while(copyElement&&!copyElement.attributes) {
+                if (!copyElement) return false;
+                copyElement = copyElement.parent
+              }
+              i = currentParentIndex
+            } else {
+              return false;
+            }
+          }
+          return true;
+        },
+        element: () => {
+          if (copyElement.tagName !== currentRule.name){
+            if (isParent) {
+              copyElement = copyElement.parent
+              i = currentParentIndex
+            } else {
+              return false;
+            }
+          }
+          return true;
+        },
+        spacing: () => {
+          // 接下来要查找父级了
+          isParent = true
+          currentParentIndex = i
+          copyElement = copyElement.parent
+          if (!copyElement) {
+            return false;
+          }
+          return true;
+        },
+      }
+
+      if (!typeFn[type](type)) {
+        result = false
+        break;
+      }
+    }
+
+    if (result) return true;
   }
+  
+  return result;
 }
+
+
+
 
 // 解决优先级
 function specificity(selector) {
@@ -83,7 +176,8 @@ function computeCSS(element) {
     var selectorParts = rule.selectors[0].split(' ').reverse();
 
     // element, selectorParts[0]匹配当前元素
-    if(!match(element, selectorParts[0]))
+    // if(!match(element, selectorParts[0]))
+    if(!match(element, rule.selectors[0]))
       continue;
 
     let matched = false;
@@ -138,10 +232,12 @@ function emit(token){
         });
     }
 
-    computeCSS(element)
-
+    // computeCSS(element)
+    
     top.children.push(element)
     element.parent = top
+
+    computeCSS(element)
 
     if (!token.isSelfClosing)
       stack.push(element);

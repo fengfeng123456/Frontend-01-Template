@@ -19,7 +19,8 @@ const server = http.createServer((req, res) => {
     width:200px;
     background-color:rgb(255,0,0);
   }
-  #container .c1{
+  
+  #container .c1#dd{
     flex:1;
     background-color:rgb(0,255,0);
   }
@@ -28,7 +29,7 @@ const server = http.createServer((req, res) => {
   <body>
       <div id="container">
           < div id="myid"></div>
-          < div class="c1"></div>
+          < div class="c1" id="dd"></div>
       </div>
   </body>
   </html>`);

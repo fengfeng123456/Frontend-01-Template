@@ -5,7 +5,8 @@
   "main": "client.js",
   "dependencies": {
     "css": "^2.2.4",
-    "images": "^3.0.2"
+    "images": "^3.0.2",
+    "lodash": "^4.17.15"
   },
   "devDependencies": {},
   "scripts": {
