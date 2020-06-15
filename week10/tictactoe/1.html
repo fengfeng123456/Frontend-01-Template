@@ -1,0 +1,168 @@
+<style>
+  #board{
+    width: 250px;
+  }
+  .cell{
+    width: 80px;
+    height: 80px;
+    background-color: green;
+    border: 1px solid #fff;
+    display: inline-block;
+    vertical-align: middle;
+
+    text-align: center;
+    line-height: 80px;
+    font-size: 50px;
+    color: red;
+  }
+</style>
+<div id="board"></div>
+<script>
+
+  let pattern = [
+    [2,0,0],
+    [0,1,0],
+    [0,0,0]
+  ]
+
+  let color = 1
+  function show(){
+    let board = document.getElementById('board')
+    board.innerHTML = ''
+
+    for(let i=0;i<pattern.length;i++){
+      for(let j=0;j<pattern[i].length;j++){
+        let cell = document.createElement('div')
+        cell.classList.add('cell')
+
+        cell.innerHTML = 
+          pattern[i][j] == 2 ? 'X' :
+          pattern[i][j] == 1 ? 'O' :
+          ''
+
+        cell.addEventListener('click', () => move(j,i))
+        board.appendChild(cell)
+      }
+    }
+  }
+
+  function move(x,y){
+    if (pattern[y][x] !== 0) 
+      return;
+
+    pattern[y][x] = color;
+
+    if(check(pattern, color)) {
+      alert(color == 2 ? 'X is winner!' : 'O is winner!')
+    }
+
+    color = 3 - color;
+
+    show();
+    
+    if(willWin(pattern, color)){
+      console.log(color == 2 ? 'X will winner!' : 'O will winner!')
+    }
+  }
+
+  function pan(pattern, x, y) {
+    var item = pattern[y][x]
+
+    var rowResult = true;
+    var columnResult = true;
+
+
+    // 行
+    for(let i = 0; i< pattern[y].length; i++) {
+      if (pattern[y][i] !== item) rowResult = false
+    }
+
+    if (!rowResult) {
+      for(let j = 0; j< pattern.length; j++) {
+        if (pattern[j][x] !== item) columnResult = false
+      }
+    }
+
+    return rowResult || columnResult;
+  }
+
+  // color，当下落下的棋子
+  function check(pattern, color, x, y) {
+    // 横坐标
+    for(let i=0;i<3;i++){
+      let win = true;
+      for(let j = 0; j<3;j++){
+        if(pattern[i][j] !== color) {
+          win = false;
+          break;
+        }
+      }
+      if(win)
+          return true;
+    }
+
+    // 纵坐标
+    for(let i=0;i<3;i++){
+      let win = true;
+      for(let j = 0; j<3;j++){
+        if(pattern[j][i] !== color) {
+          win = false;
+          break;
+        }
+        
+      }
+      if(win)
+          return true;
+    }
+
+    // 交叉，从左上角
+    {
+      let win = true;
+      for(let j = 0; j<3;j++){
+        if(pattern[j][j] !== color) {
+          win = false;
+          break;
+        }
+      }
+      if(win)
+          return true;
+    }
+
+    // 交叉，从右上角
+    {
+      let win = true;
+      for(let j = 0; j<3;j++){
+        if(pattern[j][2-j] !== color) {
+          win = false;
+          break;
+        }
+      }
+      if(win)
+          return true;
+    }
+
+    return false
+  }
+
+  function clone(pattern) {
+    return JSON.parse(JSON.stringify(pattern))
+  }
+
+  function willWin(pattern, color){
+    for(let i=0;i<3;i++){
+      for(let j = 0; j<3;j++){
+        if(pattern[i][j] !== 0)
+          continue;
+        let tmp = clone(pattern)
+        tmp[i][j] = color
+        if(check(tmp, color)){
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  show()
+
+</script>
