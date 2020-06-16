@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+  div>p#a {
+    color:green;
+  }
+  div>span#a1 {
+    color:green;
+  }
+
+  div::first-line {
+    color:blue;
+    vertical-align: bottom;
+    text-shadow: #FC0 1px 0 10px;
+  }
+
+  p.special::before {
+  display: block;
+  content: counter(chapno, upper-roman) ". ";
+  }
+
+  .outer{
+    width: 101px;
+    font-size:0;
+  }
+  .inner {
+    width:27.33%;
+    height:300px;
+    display:inline-block;
+    outline:solid 1px blue;
+    margin: 1%;
+  }
+  </style>
+</head>
+<body>
+  <div>
+    <p id="a">First paragraph就这个样子</p>
+    <p>Second paragraph</p>
+  </div>
+
+  <div>
+    <span id="a1">First paragraph就这个样子</span><br />
+    <span>Second paragraph</span>
+  </div>
+
+  <p class="special">I'm real element</p>
+
+  <div class="outer">
+    <div class="inner"></div>
+    <div class="inner"></div>
+    <div class="inner"></div>
+  </div>
+  
+  
+</body>
+</html>
