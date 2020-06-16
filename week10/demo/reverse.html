@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id='con'>
+    <a>1</a>
+    <div>2</div>
+    <div>3</div>
+    <div>4</div>
+    <div>5</div>
+  </div>
+  <script>
+    let element = document.getElementById('con')
+    reverse2(element)
+    function reverse(element){
+      // let childNodes = element.childNodes;
+      // let len = childNodes.length
+      // let i = len-2
+
+      // while(i>-1){
+      //   element.appendChild(childNodes[i])
+      //   i--
+      // }
+
+      let l = element.childNodes.length;
+      while(l-- >0){
+        console.log(l)
+        element.appendChild(element.childNodes[l])
+      }
+
+    }
+
+    // 有效的减少了dom操作
+    function reverse2(element){
+      let range = new Range()
+      // 选中element的内容
+      range.selectNodeContents(element)
+
+      // 获得一个选中内容的片段，选取出选中内容，原有element节点上，已经没有child了
+      let fragment = range.extractContents();
+      var l = fragment.childNodes.length;
+      while(l-- > 0) {
+        fragment.appendChild(fragment.childNodes[l])
+      }
+      element.appendChild(fragment)
+    }
+  </script>
+</body>
+</html>
