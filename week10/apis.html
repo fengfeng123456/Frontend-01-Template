@@ -180,6 +180,159 @@
   //https://www.w3.org/TR/DOM-Level-3-XPath/xpath.html#XPathResult
   names = filterOut(names, ['XPathResult','XPathExpression','XPathEvaluator'])
 
+// https://www.w3.org/TR/WebCryptoAPI/#subtlecrypto-interface
+  names = filterOut(names, ['SubtleCrypto','CryptoKey'])
+
+
+// https://html.spec.whatwg.org/multipage/web-messaging.html#dom-window-postmessage
+  names = filterOut(names, ['postMessage','blur','focus'])
+
+
+// https://html.spec.whatwg.org/multipage/window-object.html#dom-window-close
+  names = filterOut(names, ['close'])
+
+
+// https://www.w3.org/TR/DOM-Parsing/
+  names = filterOut(names, ['XMLSerializer'])
+
+
+// https://xhr.spec.whatwg.org/
+  names = filterOut(names,
+  ['XMLHttpRequestUpload','XMLHttpRequestEventTarget','XMLHttpRequest','FormData','ProgressEvent'])
+
+
+// https://www.w3.org/TR/uievents/
+// https://www.w3.org/TR/DOM-Level-3-Events/#interface-wheelevent
+  names = filterOut(names, ['WheelEvent','UIEvent'])
+
+
+// https://wicg.github.io/visual-viewport/#the-visualviewport-interface
+  names = filterOut(names, ['VisualViewport'])
+
+// https://www.w3.org/TR/webvtt1/#the-vttcue-interface
+  names = filterOut(names, ['VTTCue'])
+
+
+// https://url.spec.whatwg.org/#urlsearchparams
+  names = filterOut(names, ['URLSearchParams', 'URL'])
+
+
+// https://www.w3.org/TR/DOM-Level-2-Traversal-Range/traversal.html#Traversal-TreeWalker
+// https://dom.spec.whatwg.org/#interface-treewalker
+  names = filterOut(names, ['TreeWalker'])
+
+
+// https://drafts.csswg.org/css-transitions/#introduction
+  names = filterOut(names, ['TransitionEvent'])
+
+
+// https://w3c.github.io/touch-events/#touchlist-interface
+// https://www.w3.org/TR/touch-events/#touchlist-interface
+  names = filterOut(names, ['TouchEvent','Touch','TouchList'])
+
+// https://w3c.github.io/longtasks/#taskattributiontiming
+  names = filterOut(names, ['TaskAttributionTiming'])
+
+
+// https://www.w3.org/TR/2000/REC-DOM-Level-2-Style-20001113/def-index.html
+// https://drafts.csswg.org/cssom/#stylesheet
+// https://www.w3.org/TR/DOM-Level-2-Style/stylesheets.html#StyleSheets-StyleSheet
+  names = filterOut(names, ['StyleSheetList','StyleSheet'])
+
+
+// https://www.w3.org/TR/css-typed-om-1/#computed-stylepropertymapreadonly-objects
+  names = filterOut(names, ['StylePropertyMapReadOnly','StylePropertyMap'])
+
+
+// https://dom.spec.whatwg.org/#interface-staticrange
+// https://dom.spec.whatwg.org/
+  names = filterOut(names,
+  ['StaticRange','NodeIterator','NodeFilter','DOMTokenList','DOMImplementation','NamedNodeMap','MutationObserver','MutationRecord','HTMLCollection','CustomEvent','EventTarget','AbortController','AbortSignal','NodeList'])
+
+// https://www.w3.org/TR/selection-api/
+  names = filterOut(names, ['Selection'])
+
+
+// https://www.w3.org/TR/CSP3/
+  names = filterOut(names, ['SecurityPolicyViolationEvent'])
+
+  
+// https://fetch.spec.whatwg.org/ 
+  names = filterOut(names, ['Headers','Response','Request'])
+
+
+// https://html.spec.whatwg.org/multipage/
+  names = filterOut(names,
+  ['HTMLFormControlsCollection','ElementInternals','location','history','sessionStorage','localStorage'])
+
+// https://notifications.spec.whatwg.org/
+  names = filterOut(names, ['Notification','ServiceWorkerRegistration'])
+
+
+// https://storage.spec.whatwg.org/
+  names = filterOut(names, ['StorageManager'])
+
+
+// https://drafts.csswg.org/cssom-view/
+  names = filterOut(names,
+  ['Screen','screen','window','MediaQueryList','MediaQueryListEvent','document','Range','MouseEvent'])
+
+
+// 暂定 https://dom.spec.whatwg.org/#text
+  names = filterOut(names, ['TextEvent'])
+
+
+// https://www.w3.org/TR/SVG2/
+  names = filterOut(names,
+  ['SVGUnitTypes','SVGTransformList','SVGTransform','SVGStringList','SVGRect','SVGPreserveAspectRatio','SVGPointList','SVGPoint','SVGNumberList','SVGNumber','SVGMatrix','SVGLengthList','SVGLength','SVGAnimatedTransformList','SVGAnimatedString','SVGAnimatedRect','SVGAnimatedPreserveAspectRatio','SVGAnimatedNumberList','SVGAnimatedNumber','SVGAnimatedLengthList','SVGAnimatedLength','SVGAnimatedInteger','SVGAnimatedEnumeration','SVGAnimatedBoolean','SVGAnimatedAngle','SVGAngle'])
+
+
+// https://drafts.csswg.org/resize-observer/#resize-observer-entry-interface
+  names = filterOut(names, ['ResizeObserverEntry','ResizeObserver'])
+
+
+// https://www.w3.org/TR/paint-timing/
+  names = filterOut(names, ['PerformancePaintTiming'])
+
+
+// https://w3c.github.io/reporting/
+  names = filterOut(names, ['ReportingObserver'])
+
+
+// https://www.w3.org/TR/pointerevents2/
+  names = filterOut(names, ['PointerEvent'])
+
+
+// https://www.w3.org/TR/navigation-timing/#sec-navigation-timing-interface
+  names = filterOut(names, ['PerformanceTiming','PerformanceNavigation','performance','Performance'])
+
+// https://www.w3.org/TR/server-timing/#the-performanceservertiming-interface
+  names = filterOut(names, ['PerformanceServerTiming','PerformanceResourceTiming'])
+
+// https://www.w3.org/TR/performance-timeline-2/#performanceobserverentrylist-interface
+  names = filterOut(names, ['PerformanceObserverEntryList','PerformanceObserver','PerformanceEntry'])
+
+// https://www.w3.org/TR/navigation-timing-2/#sec-PerformanceNavigationTiming
+  names = filterOut(names, ['PerformanceNavigationTiming'])
+
+// https://www.w3.org/TR/user-timing/#performancemeasure
+  names = filterOut(names, ['PerformanceMeasure','PerformanceMark'])
+
+
+// https://w3c.github.io/longtasks/#sec-PerformanceLongTaskTiming
+  names = filterOut(names, ['PerformanceLongTaskTiming'])
+
+  
+// https://w3c.github.io/longtasks/#sec-TaskAttributionTiming
+  names = filterOut(names, ['TaskAttributionTiming'])
+
+
+// https://wicg.github.io/event-timing/#sec-performance-event-timing
+  names = filterOut(names, ['PerformanceEventTiming'])
+
+
+// https://www.w3.org/TR/DOM-Level-2-Events/events.html#Events-MutationEvent
+  names = filterOut(names, ['MutationEvent'])
 
 
 
@@ -194,7 +347,6 @@
 
 
 
-
-  console.log(names.toString());
+  console.log(names.toString(),names.length);
    
   </script>
