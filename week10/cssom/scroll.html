@@ -1,0 +1,40 @@
+<style>
+  #box{
+    width: 180px;
+    height: 120px;
+    overflow: scroll;
+  }
+</style>
+<div id="box">
+  <span id="tx">
+    文字文字文字文字文字文字
+    文字文字文字文字文字文字
+    文字文字文字文字文字文字
+    文字文字文字文字文字文字
+    文字文字文字文字文字文字
+    文字文字文字文字文字文字
+    文字文字文字文字文字文字
+    文字文字文字文字文字文字
+    文字文字文字文字文字文字
+    文字文字文字文字文字文字
+    文字文字文字文字文字文字
+    文字文字文字文字文字文字
+    文字文字文字文字文字文字
+    文字文字文字文字文字文字
+    文字文字文字文字文字文字
+  </span>
+</div>
+<script>
+  let ele = document.getElementById('tx')
+  // 这里getClientRects会产生多个行盒，
+  // 有多少行就是多少盒子；
+  // 只在inline的时候会产生多个rect
+  let rects = ele.getClientRects()
+  console.log(rects)
+
+  // 但是想要得到这个元素的宽高，怎么办？
+
+  console.log(ele.getBoundingClientRect())
+
+  
+</script>

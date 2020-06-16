@@ -1,5 +1,19 @@
 # 每周总结可以写在这里
 
+性能：
+操作dom，可以用Range来提高性能；
+
+CSSOM最重要，最实用的API：
+getClientRects
+getBoundingClientRect
+
+window.innerHeight
+window.innerWidth
+// 可以得到与上面两个api相同的值
+document.documentElement.getBoundingClientRect
+window.devicePixelRatio
+
+
 井字棋：
 二维数组（最差），
 一维数组（最好），

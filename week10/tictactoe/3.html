@@ -20,9 +20,9 @@
 <script>
 
   let pattern = [
-    [2,0,0],
-    [0,1,0],
-    [0,0,0]
+    0,0,0,
+    0,0,0,
+    0,0,0
   ]
 
   let color = 1
@@ -30,27 +30,27 @@
     let board = document.getElementById('board')
     board.innerHTML = ''
 
-    for(let i=0;i<pattern.length;i++){
-      for(let j=0;j<pattern[i].length;j++){
+    for(let i=0;i<3;i++){
+      for(let j=0;j<3;j++){
         let cell = document.createElement('div')
         cell.classList.add('cell')
 
         cell.innerHTML = 
-          pattern[i][j] == 2 ? 'X' :
-          pattern[i][j] == 1 ? 'O' :
+          pattern[i*3+j] == 2 ? 'X' :
+          pattern[i*3+j] == 1 ? 'O' :
           ''
 
-        cell.addEventListener('click', () => move(j,i))
+        cell.addEventListener('click', () => userMove(j,i))
         board.appendChild(cell)
       }
     }
   }
 
-  function move(x,y){
-    if (pattern[y][x] !== 0) 
+  function userMove(x,y){
+    if (pattern[y*3+x] !== 0) 
       return;
 
-    pattern[y][x] = color;
+    pattern[y*3+x] = color;
 
     if(check(pattern, color)) {
       alert(color == 2 ? 'X is winner!' : 'O is winner!')
@@ -60,30 +60,24 @@
 
     show();
     
-    if(willWin(pattern, color)){
-      console.log(color == 2 ? 'X will winner!' : 'O will winner!')
-    }
+    // if(willWin(pattern, color)){
+    //   console.log(color == 2 ? 'X will winner!' : 'O will winner!')
+    // }
+
+    computerMove()
   }
 
-  function pan(pattern, x, y) {
-    var item = pattern[y][x]
-
-    var rowResult = true;
-    var columnResult = true;
-
-
-    // 行
-    for(let i = 0; i< pattern[y].length; i++) {
-      if (pattern[y][i] !== item) rowResult = false
+  function computerMove(){
+    let choice = bestChoice(pattern, color)
+    if(choice.point)
+      pattern[choice.point[1]*3+choice.point[0]] = color
+    if(check(pattern, color)){
+      alert(color == 2 ? 'X is winner!' : 'O is winner!')
     }
 
-    if (!rowResult) {
-      for(let j = 0; j< pattern.length; j++) {
-        if (pattern[j][x] !== item) columnResult = false
-      }
-    }
+    color = 3 - color;
 
-    return rowResult || columnResult;
+    show();
   }
 
   // color，当下落下的棋子
@@ -92,7 +86,7 @@
     for(let i=0;i<3;i++){
       let win = true;
       for(let j = 0; j<3;j++){
-        if(pattern[i][j] !== color) {
+        if(pattern[i*3+j] !== color) {
           win = false;
           break;
         }
@@ -105,7 +99,7 @@
     for(let i=0;i<3;i++){
       let win = true;
       for(let j = 0; j<3;j++){
-        if(pattern[j][i] !== color) {
+        if(pattern[j*3+i] !== color) {
           win = false;
           break;
         }
@@ -119,7 +113,7 @@
     {
       let win = true;
       for(let j = 0; j<3;j++){
-        if(pattern[j][j] !== color) {
+        if(pattern[j*3 + j] !== color) {
           win = false;
           break;
         }
@@ -132,7 +126,7 @@
     {
       let win = true;
       for(let j = 0; j<3;j++){
-        if(pattern[j][2-j] !== color) {
+        if(pattern[j*3+2-j] !== color) {
           win = false;
           break;
         }
@@ -145,28 +139,60 @@
   }
 
   function clone(pattern) {
-    return JSON.parse(JSON.stringify(pattern))
+    // 这里节省内存
+    return Object.create(pattern)
   }
 
   function willWin(pattern, color){
     for(let i=0;i<3;i++){
       for(let j = 0; j<3;j++){
-        if(pattern[i][j] !== 0)
+        if(pattern[i*3+j] !== 0)
           continue;
         let tmp = clone(pattern)
-        tmp[i][j] = color
+        tmp[i*3+j] = color
         if(check(tmp, color)){
-          return true;
+          return [j, i];
         }
       }
     }
     return false;
   }
 
-  // function willLose(pattern, color) {
-  //   if(willWin(pattern, color)) 
-  //     return false;
-  // }
+ 
+
+  function bestChoice(pattern, color) {
+   
+    let point = null;
+    if(point = willWin(pattern, color)) {
+      return {
+        point: point,
+        result: 1
+      }
+    }
+
+    // 找到对手最好的情况，也就是对自己有利的情况
+    let result = -1;
+    outer:for(let i=0;i<3;i++){
+      for(let j=0;j<3;j++){
+        if(pattern[i*3+j] !== 0)
+          continue;
+        let tmp = clone(pattern)
+        tmp[i*3+j] = color
+        let opp = bestChoice(tmp, 3-color);
+        if(-opp.result >= result){
+          point = [j, i]
+          result = -opp.result
+        }
+        if(result == 1)
+          break outer;
+      }
+    }
+
+    return {
+      point: point,
+      result: point ? result : 0
+    }
+  }
 
   show()
 
