@@ -29,12 +29,15 @@
   names = names.filter( e => !e.match(/^on/))
    
   names = names.filter( e => !e.match(/^webkit/))
-   
+
+  names = names.filter(e => !e.match(/^WebKit/))
+
    
   //https://html.spec.whatwg.org/#window
+// https://www.w3.org/TR/html50/browsers.html#the-window-object
    
   {
-      let names = Object.getOwnPropertyNames(window)
+      // let names = Object.getOwnPropertyNames(window)
       let js = new Set();
       let objects = ["BigInt", "BigInt64Array", "BigUint64Array", "Infinity", "NaN", "undefined", "eval", "isFinite", "isNaN", "parseFloat", "parseInt", "decodeURI", "decodeURIComponent", "encodeURI", "encodeURIComponent", "Array", "Date", "RegExp", "Promise", "Proxy", "Map", "WeakMap", "Set", "WeakSet", "Function", "Boolean", "String", "Number", "Symbol", "Object", "Error", "EvalError", "RangeError", "ReferenceError", "SyntaxError", "TypeError", "URIError", "ArrayBuffer", "SharedArrayBuffer", "DataView", "Float32Array", "Float64Array", "Int8Array", "Int16Array", "Int32Array", "Uint8Array", "Uint16Array", "Uint32Array", "Uint8ClampedArray", "Atomics", "JSON", "Math", "Reflect", "escape", "unescape"];
       objects.forEach(o => js.add(o));
@@ -50,7 +53,18 @@
    
       let windowprops = new Set();
       objects = ["window", "self", "document", "name", "location", "history", "customElements", "locationbar", "menubar", " personalbar", "scrollbars", "statusbar", "toolbar", "status", "close", "closed", "stop", "focus", " blur", "frames", "length", "top", "opener", "parent", "frameElement", "open", "navigator", "applicationCache", "alert", "confirm", "prompt", "print", "postMessage", "console"];
-      objects.forEach(o => windowprops.add(o));
+      
+      // https://www.w3.org/TR/html50/browsers.html#the-window-object
+      objectss = ['parent', 'opener', 'top', 'length', 'frames', 'closed', 'self', 'name',
+      'customElements', 'locationbar','menubar','personalbar','scrollbars','statusbar','toolbar','status','frameElement',
+      '']
+
+      objectsss = ['btoa','atob','setTimeout','clearTimeout','setInterval','clearInterval','origin', 'queueMicrotask',
+      'createImageBitmap', 'external', 'clientInformation', 'requestAnimationFrame',
+      'cancelAnimationFrame', 'captureEvents', 'releaseEvents', 'requestIdleCallback',
+      '','', '','','','','','','','','','','', '', '', '']
+      objects2 = [...objects,...objectss,...objectsss]
+      objects2.forEach(o => windowprops.add(o));
       names = names.filter(e => !windowprops.has(e));
   }
    
@@ -250,7 +264,7 @@
   ['StaticRange','NodeIterator','NodeFilter','DOMTokenList','DOMImplementation','NamedNodeMap','MutationObserver','MutationRecord','HTMLCollection','CustomEvent','EventTarget','AbortController','AbortSignal','NodeList'])
 
 // https://www.w3.org/TR/selection-api/
-  names = filterOut(names, ['Selection'])
+  names = filterOut(names, ['Selection','getSelection'])
 
 
 // https://www.w3.org/TR/CSP3/
@@ -275,7 +289,7 @@
 
 // https://drafts.csswg.org/cssom-view/
   names = filterOut(names,
-  ['Screen','screen','window','MediaQueryList','MediaQueryListEvent','document','Range','MouseEvent'])
+  ['Screen','window','MediaQueryList','MediaQueryListEvent','document','Range','MouseEvent'])
 
 
 // 暂定 https://dom.spec.whatwg.org/#text
@@ -333,6 +347,149 @@
 
 // https://www.w3.org/TR/DOM-Level-2-Events/events.html#Events-MutationEvent
   names = filterOut(names, ['MutationEvent'])
+
+// https://drafts.csswg.org/cssom/#the-medialist-interface
+  names = filterOut(names, ['MediaList','CSSStyleSheet','CSSRuleList','CSSRule','CSSStyleRule','CSSImportRule','CSSGroupingRule', 'CSSMediaRule','CSSPageRule', 'CSSNamespaceRule', 'CSSStyleDeclaration'])
+
+
+// https://drafts.csswg.org/web-animations-1/#the-keyframeeffect-interface
+  names = filterOut(names, ['KeyframeEffect','AnimationTimeline','DocumentTimeline','Animation','AnimationEffect','AnimationPlaybackEvent'])
+
+// https://www.w3.org/TR/uievents/
+  names = filterOut(names, ['KeyboardEvent','FocusEvent','CompositionEvent', 'InputEvent', '', '', '', '', ''])
+
+// https://www.w3.org/TR/intersection-observer/#idl-index
+  names = filterOut(names, ['IntersectionObserverEntry','IntersectionObserver'])
+
+// https://wicg.github.io/input-device-capabilities/#dom-uievent-sourcecapabilities
+  names = filterOut(names, ['InputDeviceCapabilities'])
+
+
+// https://www.w3.org/TR/requestidlecallback/#the-idledeadline-interface
+  names = filterOut(names, ['IdleDeadline', '', '', '', ''])
+
+// https://html.spec.whatwg.org/multipage/common-dom-interfaces.html#the-htmloptionscollection-interface
+  names = filterOut(names, ['HTMLOptionsCollection', '', '', '', ''])
+
+// https://drafts.csswg.org/css-font-loading/#dom-fontfacesetloadevent-fontfacesetloadevent
+  names = filterOut(names, ['FontFaceSetLoadEvent', 'FontFace', '', '', ''])
+
+// https://w3c.github.io/FileAPI/#dfn-filereader
+  names = filterOut(names, ['FileReader', 'Blob', 'File', 'FileList', ''])
+
+// https://dom.spec.whatwg.org/#interface-event
+  names = filterOut(names, ['Event', '', '', '', ''])
+
+// https://www.w3.org/TR/geometry-1/#idl-index
+  names = filterOut(names, ['DOMRectReadOnly','DOMRectList','DOMRect','DOMQuad','DOMPointReadOnly','DOMPoint','DOMParser','DOMMatrixReadOnly','DOMMatrix','DOMException'])
+
+// https://www.w3.org/TR/clipboard-apis/
+  names = filterOut(names, ['ClipboardEvent', 'navigator', 'Clipboard', '', ''])
+
+
+// https://www.w3.org/TR/css-typed-om-1/
+  names = filterOut(names, ['CSSVariableReferenceValue', 'CSSUnparsedValue', 'CSSStyleValue', 'CSSKeywordValue',
+  'CSSNumericValue', 'CSSUnitValue', 'CSSMathValue', 'CSSMathSum', 'CSSMathProduct', 'CSSMathNegate',
+  'CSSMathInvert','CSSMathMin', 'CSSMathMax', 'CSSNumericArray', 'CSSTransformValue', 'CSSTransformComponent',
+  'CSSTranslate', 'CSSRotate',
+  'CSSScale','CSSSkew', 'CSSSkewX', 'CSSSkewY', 'CSSPerspective', 'CSSMatrixComponent', 'CSSPositionValue',
+  'CSSImageValue'])
+
+// https://drafts.csswg.org/css-conditional-3/#the-csssupportsrule-interface
+  names = filterOut(names, ['CSSSupportsRule', 'CSSConditionRule', '', '', ''])
+
+// https://drafts.csswg.org/css-animations/#idl-index
+  names = filterOut(names, ['AnimationEvent', 'CSSKeyframeRule', 'CSSKeyframesRule', '', ''])
+
+// https://www.w3.org/TR/css-fonts-3/#om-fontface
+  names = filterOut(names, ['CSSFontFaceRule', '', '', '', ''])
+
+// https://drafts.csswg.org/cssom-view/#dom-window-pagexoffset
+  names = filterOut(names, ['innerWidth','innerHeight','scrollX','pageXOffset','scrollY','pageYOffset','screen',
+  'screenX','screenY','screenLeft','screenTop','outerWidth','outerHeight',
+  'moveTo','moveBy', 'resizeTo','resizeBy','scroll','scrollTo','scrollBy', 'devicePixelRatio','matchMedia'])
+
+// https://fetch.spec.whatwg.org/#fetch-api
+  names = filterOut(names, ['fetch','', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''])
+
+
+// https://www.w3.org/TR/WebCryptoAPI/#crypto-interface
+  names = filterOut(names, ['crypto', '', '', '', ''])
+
+
+// https://wicg.github.io/visual-viewport/#the-visualviewport-interface
+  names = filterOut(names, ['visualViewport', '', '', '', ''])
+
+
+// https://www.w3.org/TR/webxr/#idl-index
+  names = filterOut(names,
+  ['XR','XRBoundedReferenceSpace','XRFrame','XRInputSource','XRInputSourceArray','XRInputSourceEvent','XRInputSourcesChangeEvent','XRPose','XRReferenceSpace','XRReferenceSpaceEvent','XRRenderState','XRRigidTransform','XRSession','XRSessionEvent','XRSpace','XRView','XRViewerPose','XRViewport','XRWebGLLayer'])
+
+// https://immersive-web.github.io/hit-test/
+  names = filterOut(names, ['XRHitResult','XRHitTestOptions','XRHitTestResult','XRHitTestSource','XRRay', '', '', '', ''])
+
+
+// https://www.w3.org/TR/generic-sensor/#the-sensor-interface
+  names = filterOut(names, ['Sensor', 'SensorErrorEvent', '', '', ''])
+
+
+// https://wicg.github.io/webhid/
+  names = filterOut(names,
+  ['HID','HIDCollectionInfo','HIDConnectionEvent','HIDDevice','HIDInputReportEvent','HIDReportInfo','HIDReportItem'])
+
+// https://wicg.github.io/webusb/#idl-index
+  names = filterOut(names,
+  ['USB','USBAlternateInterface','USBConfiguration','USBConnectionEvent','USBDevice','USBEndpoint','USBInterface','USBInTransferResult','USBIsochronousInTransferPacket','USBIsochronousInTransferResult','USBIsochronousOutTransferPacket','USBIsochronousOutTransferResult','USBOutTransferResult'])
+
+
+// https://webbluetoothcg.github.io/web-bluetooth/#idl-index
+  names = filterOut(names,
+  ['Bluetooth','BluetoothCharacteristicProperties','BluetoothDevice','BluetoothRemoteGATTCharacteristic','BluetoothRemoteGATTDescriptor','BluetoothRemoteGATTServer','BluetoothRemoteGATTService', 'BluetoothUUID'])
+
+//https://w3c.github.io/web-nfc/
+
+
+// https://www.w3.org/TR/css-device-adapt-1/#css-rule-interface
+  names = filterOut(names, ['CSSViewportRule', '', '', '', ''])
+
+
+// https://w3c.github.io/webappsec-trusted-types/dist/spec/#idl-index
+  names = filterOut(names,
+  ['TrustedHTML','TrustedScript','TrustedScriptURL','TrustedTypePolicy','TrustedTypePolicyFactory','TrustedURL','TrustedTypes'])
+
+// https://immersive-web.github.io/webvr/spec/1.1/#interface-vrstageparameters
+  names = filterOut(names,
+  ['VRDisplay','VRDisplayCapabilities','VRDisplayEvent','VREyeParameters','VRFrameData','VRPose','VRStageParameters'])
+
+// ??
+// https://developer.mozilla.org/zh-CN/docs/Web/API/FileSystemFileEntry
+// https://wicg.github.io/entries-api/
+  names = filterOut(names,
+  ['FileSystemDirectoryHandle,FileSystemFileHandle,FileSystemHandle,FileSystemWriter,chooseFileSystemEntries', '', '',
+  '', ''])
+
+// 
+  names = filterOut(names, ['', '', '', '', ''])
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
