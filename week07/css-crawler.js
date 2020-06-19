@@ -11,7 +11,12 @@
 //     })
 // }
 
-var standards = [{
+var standards = [
+  {
+    "name": "tttttttttt",
+    "url": "https://www.w3.org/TR/2019/WD-css-lists-3-20190425/"
+  },
+  {
     "name": "Ethiopic Layout Requirements",
     "url": "https://www.w3.org/TR/2020/WD-elreq-20200526/"
   },
@@ -589,9 +594,18 @@ function happen(element, event) {
 }
 
 void async function () {
+  var output = []
   for(let standard of standards){
     iframe.src = standard.url
     console.log(standard.name)
     await happen(iframe, 'load')
+
+
+    var properties = Array.prototype.map.call(iframe.contentWindow.document.querySelectorAll(".propdef [data-dfn-type=property]"), e => e.childNodes[0].textContent);
+    if (properties.length) output.push(standard.name + " | " + properties.join(", "));
+
+    console.log(standard.name, properties)
   }
+
+  console.log(output.join("\n"))
 }();
