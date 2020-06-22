@@ -23,3 +23,8 @@ new Array(10000).fill(0)
   -2.监听document的mousedown和mouseup事件，改变标志
   -3.监听cell的mouseover，通过判断标志，来画内容
 
+2.1 寻路问题
+
+  -1.搜索算法，
+    深度优先：和递归很像、广度优先
+  

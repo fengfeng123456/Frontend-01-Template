@@ -55,7 +55,32 @@
   document.addEventListener('contextmenu', e => e.preventDefault())
 
 
-  function path(map, start, end){
+  function findPath(map, start, end){
+    map = map.slice()
+
+    let queue = [start]
+
+    function insert(x,y){
+      // 这个点已经遍历过了
+      if(map[100 * y + x] !== 0)
+        return;
+      // 这个点超出边界了
+      if(map[x<0 || y<0 || x>100 || y>100])
+        return;
+      map[100*y + x] = 2
+      queue.push(x,y)
+
+    }
+
+    while(queue.length) {
+      let [x,y] = queue.shift() // pop unshift/push shift
+
+      // 对该点的上下左右四个点，进行处理
+      inset([x-1, y])
+      inset([x+1, y])
+      inset([x, y-1])
+      inset([x, y+1])
+    }
 
   }
 </script>
