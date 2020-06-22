@@ -12,10 +12,10 @@
 // }
 
 var standards = [
-  {
-    "name": "tttttttttt",
-    "url": "https://www.w3.org/TR/2019/WD-css-lists-3-20190425/"
-  },
+  // {
+  //   "name": "tttttttttt",
+  //   "url": "https://www.w3.org/TR/2019/WD-css-lists-3-20190425/"
+  // },
   {
     "name": "Ethiopic Layout Requirements",
     "url": "https://www.w3.org/TR/2020/WD-elreq-20200526/"
