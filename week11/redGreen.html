@@ -1,0 +1,76 @@
+<style>
+  div{
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: inline-block;
+    margin: 20px;
+    background-color: gray;
+  }
+  /* #red{
+    background-color: #f69b9b;
+  }
+  #green{
+    background-color: #62d162;
+  }
+  #yellow{
+    background-color: #f6f66e;
+  } */
+  #red.active{
+    background-color: red;
+  }
+  #green.active{
+    background-color: green;
+  }
+  #yellow.active{
+    background-color: yellow;
+  }
+  
+</style>
+
+  <div id="red"></div>
+  <div id="green"></div>
+  <div id="yellow"></div>
+
+<script>
+
+  function LightId(id) {
+    document.getElementById(id).classList.add('active')
+    var childs = document.getElementById(id).parentNode.childNodes
+
+    for(var i = 0;i<childs.length;i++){
+      let child = childs[i]
+      if (document.getElementById(id) !== child&&child.classList) {
+        child.classList = ''
+      }
+    }
+  }
+  function Light(id, time){
+    return new Promise((resolve,reject) =>{
+      setTimeout(function(){
+        LightId(id)
+        resolve()
+      }, time*1000)
+    })
+  }
+  function renGreenYellow(){
+    Light('green', 10).then(() => {
+      Light('yellow', 2).then(() => {
+        Light('red',5).then(()=>{
+          renGreenYellow()
+        })
+      })
+    })
+  }
+
+  function renGreenYellow(){
+    Light('green', 10).then(() => {
+      return Light('yellow', 2)
+    }).then(() => {
+      return Light('red', 5)
+    })
+  }
+
+  renGreenYellow()
+
+</script>
