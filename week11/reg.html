@@ -32,6 +32,7 @@
   var container = document.getElementById('container')
 
   do {
+    // lastIndex 的改变 可以改变exec的已匹配的位置，regexp中唯一有用，能改变状态的属性值
     lastIndex = regexp.lastIndex
     token = regexp.exec(source)
     if(!token) break;
