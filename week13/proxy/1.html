@@ -1,0 +1,18 @@
+<script>
+  let obj = {
+    a: 1,
+    b: 2
+  }
+
+  let proxy = new Proxy(obj, {
+    get(obj, prop) {
+      console.log(obj, prop)
+      return obj[prop]
+    },
+    defineProperty(obj, prop, desc) {
+      console.log(arguments)
+      return Object.defineProperty(obj, prop, desc)
+    }
+  })
+
+</script>
