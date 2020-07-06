@@ -1,0 +1,70 @@
+<script>
+  let object = {
+    a: 1,
+    b: 2
+  }
+
+
+  let handlers = new Map()
+
+  let usedReactivities = []
+
+  function reactive(object) {
+    return new Proxy(object, {
+      get(obj, prop) {
+        // 依赖收集
+        usedReactivities.push([obj, prop])
+        return obj[prop]
+      },
+      set(obj, prop, val) {
+        obj[prop] = val
+        // 执行对应的，收集来的handler
+        if(handlers.get(obj))
+          if(handlers.get(obj).get(prop))
+            for (let handler of handlers.get(obj).get(prop))
+              handler()
+        return obj[prop]
+      }
+    })
+  }
+
+  function effect(handler) {
+    usedReactivities = []
+    // 触发reactive中get，usedReactivities中的值就会改变
+    handler()
+    console.log(usedReactivities)
+    // 把对应的handler，赋值
+    for(let usedReactivity of usedReactivities){
+      let [obj, prop] = usedReactivity
+      if(!handlers.has(obj))
+        handlers.set(obj, new Map())
+
+      if(!handlers.get(obj).has(prop))
+        handlers.get(obj).set(prop, [])
+      
+      handlers.get(obj).get(prop).push(handler)
+    }
+  }
+
+  let dumny;
+  let proxy = reactive(object)
+
+  effect(() => dumny = proxy.a)
+  console.log(dumny)
+  proxy.a = 2
+  console.log(dumny)
+
+  // ------问题---
+  let v;
+  let p1 = reactive({a:1})
+  let p2 = reactive({a:2})
+
+  let b = false
+
+  effect(() => v = b ? 2:p1.a)
+  console.log('v', v)
+  // 这样v的值就永远不会变了
+  b = true
+  p1.a = 10
+  console.log('v', v)
+</script>

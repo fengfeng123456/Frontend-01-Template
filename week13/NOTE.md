@@ -1,4 +1,4 @@
-# Proxy
+# Proxy---一般在库中使用
 
   https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Proxy
 
@@ -11,6 +11,7 @@
 
   it('should observe basic properties', () => {
     let dummy
+    // 这里是怎么实现的？？
     const counter = reactive({ num: 0 })
     effect(() => (dummy = counter.num))
 
@@ -18,3 +19,6 @@
     counter.num = 7
     expect(dummy).toBe(7)
   })
+
+
+  

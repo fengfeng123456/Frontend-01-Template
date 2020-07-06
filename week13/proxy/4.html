@@ -1,0 +1,73 @@
+<script>
+  let object = {
+    a: {x:1},
+    b: 2
+  }
+
+
+  let handlers = new Map()
+  let reactivities = new Map()
+
+  let usedReactivities = []
+
+  // 问题： 每次都会得到一个新的reactive对象
+  // 解决：reactivities变量
+  function reactive(object) {
+    if(reactivities.has(object)){
+      return reactivities.get(object)
+    }
+
+    let proxy = new Proxy(object, {
+      get(obj, prop) {
+        // 依赖收集
+        usedReactivities.push([obj, prop])
+        if(typeof obj[prop] === 'object')
+          return reactive(obj[prop])
+        return obj[prop]
+      },
+      set(obj, prop, val) {
+        obj[prop] = val
+        // 执行对应的，收集来的handler
+        if (handlers.get(obj))
+          if (handlers.get(obj).get(prop))
+            for (let handler of handlers.get(obj).get(prop))
+              handler()
+        return obj[prop]
+      }
+    })
+
+    reactivities.set(object, proxy)
+    reactivities.set(proxy, proxy)
+    return proxy
+  }
+
+  function effect(handler) {
+    usedReactivities = []
+    // 触发reactive中get，usedReactivities中的值就会改变
+    handler()
+    console.log(usedReactivities)
+    // 把对应的handler，赋值
+    for (let usedReactivity of usedReactivities) {
+      let [obj, prop] = usedReactivity
+      if (!handlers.has(obj))
+        handlers.set(obj, new Map())
+
+      if (!handlers.get(obj).has(prop))
+        handlers.get(obj).set(prop, [])
+
+      handlers.get(obj).get(prop).push(handler)
+    }
+  }
+
+  // 问题 不生效 object的层级变深
+  // 解决： 修改reactive函数，让所有层级都能proxy
+  let v;
+  let p = reactive(object)
+
+
+  effect(() => v = p.a.x)
+  console.log('v', v)
+  
+  p.a.x = 10
+  console.log('v', v)
+</script>
