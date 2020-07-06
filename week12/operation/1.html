@@ -18,6 +18,9 @@ function* tokenize(source){
     // 判断 
     if(!result) break;
     // source中出现不匹配的字符，报错
+    // regexp.lastIndex 这一次匹配到的值得下一个下角标
+    // lastIndex 上一次匹配的值的下一个下角标
+    // regexp.lastIndex - lastIndex得到的是匹配到的那个值的长度
     if(regexp.lastIndex - lastIndex > result[0].length)
       throw new Error('Unexpected token "'+
         source.slice(lastIndex, regexp.lastIndex - result[0].length)+'"')

@@ -1,0 +1,63 @@
+<script>
+
+var regexp = /([0-9\.]+)|([ ]+)|([\r\n]+)|(\+)|(\-)|(\*)|(\/)/g
+
+var dictionary = ['Number', 'Whitespace', 'LineTerminator', '+', '-', '*', '/']
+
+function Expression(source){}
+function AdditiveExpression(source){}
+function MultiplicativeExpression(source){}
+
+function* tokenize(source){
+  let lastIndex = 0
+
+
+  let result = ''
+
+  while(true){
+    lastIndex = regexp.lastIndex
+
+
+
+    // 获得的是一个数组，第一个值为匹配值，第二个值为一个小括号匹配的值 
+    result = regexp.exec(source)
+
+    if(!result) break;
+
+    // 判断异常输入
+    if(regexp.lastIndex - lastIndex > result[0].length)
+      throw new Error('输入异常');
+
+
+
+    // token
+    let token = {
+      type: null,
+      value: null
+    }
+
+    for(let i = 0;i<dictionary.length;i++){
+      if(result[i+1])
+        token.type = dictionary[i]
+    }
+
+    token.value = result[0]
+
+    yield token;
+  }
+
+  
+
+
+  // 这里怎么继续下一次 yeild呢？ 用while循环
+
+}
+
+
+var source = []
+
+for(let token of tokenize('1024 + 10 * 25'))
+  console.log(token)
+
+
+</script>
