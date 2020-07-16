@@ -108,7 +108,7 @@
   range.setEnd(document.getElementById('text').childNodes[0], 15)
   let data = reactive({text:'world'})
   effect(() => {
-    range.extractContents()7
+    range.extractContents()
     range.insertNode(document.createTextNode(data.text))
   })
 </script>
