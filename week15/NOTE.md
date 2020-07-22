@@ -1,3 +1,5 @@
+作业是component2
+
 # 第一堂课
 
 仿照vue，写FSC风格的代码
