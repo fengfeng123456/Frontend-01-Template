@@ -34,70 +34,79 @@ class Carousel{
     </div>
     let position = 0
     let tl = new Timeline;
-    for (; position < children.length; position++) {
-      let nextPosition = (position+1)%this.data.length
-
-      let current = children[position];
-      let next = children[nextPosition];
-      tl.add(
-        new Animation(
-          current.style,
-          'transform',
-          -100 * position,
-          -100 - 100 * position,
-          500,
-          position * 3000,
-          ease,
-          v => {
-            return `translate(${v}%)`;
-          }
-        ),
-      );
-      tl.add(
-        new Animation(
-          next.style,
-          'transform',
-          100 - 100 * nextPosition,
-          -100 * nextPosition,
-          500,
-          position * 3000,
-          ease,
-          v => {
-            return `translate(${v}%)`;
-          }
-        ),
-      );
-    }
-    setTimeout(() => tl.start(), 3000);
-
-
 
 
     let nextPic = () =>{
-      // 获得一定范围内的数字循环，取余算法 
-      let nextPosition = (position+1)%this.data.length
+      for (; position < children.length; position++) {
+        // 获得一定范围内的数字循环，取余算法 
+        let nextPosition = (position+1)%this.data.length
 
-      let current = children[position];
-      let next = children[nextPosition]
+        let current = children[position];
+        let next = children[nextPosition]
 
-      current.style.transition = 'ease 0s'
-      next.style.transition = 'ease 0s'
-      // 开始状态
-      current.style.transform = `translateX(${-100*position}%)`
-      next.style.transform = `translateX(${100 - 100*nextPosition}%)`
-
-      setTimeout(() => {
-        current.style.transition = ''
-        next.style.transition = ''
-        // 结束状态
-        current.style.transform = `translateX(${-100-100*position}%)`
-        next.style.transform = `translateX(${-100*nextPosition}%)`
-
-        position = nextPosition
-      }, 16)
-
-      setTimeout(nextPic, 3000)
+        tl.add(
+          new Animation(
+            current.style,
+            'transform',
+            -100 * position,
+            -100 - 100 * position,
+            500,
+            (position+1) * 3000,
+            ease,
+            v => {
+              return `translate(${v}%)`;
+            }
+          ),
+        );
+        tl.add(
+          new Animation(
+            next.style,
+            'transform',
+            100 - 100 * nextPosition,
+            -100 * nextPosition,
+            500,
+            (position+1) * 3000,
+            ease,
+            v => {
+              return `translate(${v}%)`;
+            }
+          ),
+        );
+      }
+      tl.start(true)
+      console.log(tl)
     }
+
+    nextPic()
+    // setTimeout(nextPic, 3000)
+
+
+
+    // let nextPic = () =>{
+    //   // 获得一定范围内的数字循环，取余算法 
+    //   let nextPosition = (position+1)%this.data.length
+
+    //   let current = children[position];
+    //   let next = children[nextPosition]
+
+    //   current.style.transition = 'ease 0s'
+    //   next.style.transition = 'ease 0s'
+    //   // 开始状态
+    //   current.style.transform = `translateX(${-100*position}%)`
+    //   next.style.transform = `translateX(${100 - 100*nextPosition}%)`
+
+    //   setTimeout(() => {
+    //     current.style.transition = ''
+    //     next.style.transition = ''
+    //     // 结束状态
+    //     current.style.transform = `translateX(${-100-100*position}%)`
+    //     next.style.transform = `translateX(${-100*nextPosition}%)`
+
+    //     position = nextPosition
+    //   }, 16)
+
+    //   setTimeout(nextPic, 3000)
+    // }
     // 保持第一个停留3s
     // setTimeout(nextPic, 3000)
 
