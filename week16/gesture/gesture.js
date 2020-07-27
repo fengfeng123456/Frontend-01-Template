@@ -67,7 +67,7 @@ function enableGesture(element){
   // 手势的基本架构：监听-》识别-》分发
 
   let start = (point, context) => {
-    element.dispatchEvent(new CustomEvent('start', {
+    element.dispatchEvent(Object.assign(new CustomEvent('start'), {
       startX: point.clientX,
       startY: point.clientY,
       clientX: point.clientX,
@@ -85,7 +85,7 @@ function enableGesture(element){
       context.isTap = false
       context.isPan = false
       context.isPress = true
-      element.dispatchEvent(new CustomEvent('pressstart', {}))
+      element.dispatchEvent(new CustomEvent('pressstart'))
     }, 500)
   }
 
@@ -94,12 +94,12 @@ function enableGesture(element){
 
     if(dx ** 2 + dy ** 2 > 100 && !context.isPan){
       if(context.isPress)
-        element.dispatchEvent(new CustomEvent('presscancel', {}))
+        element.dispatchEvent(new CustomEvent('presscancel'))
       context.isTap = false
       context.isPan = true
       context.isPress = false
 
-      element.dispatchEvent(new CustomEvent('panstart', {
+      element.dispatchEvent(Object.assign(new CustomEvent('panstart'), {
         startX: context.startX,
         startY: context.startY,
         clientX: point.clientX,
@@ -117,7 +117,7 @@ function enableGesture(element){
         t: Date.now()
       })
       context.moves = context.moves.filter(record => Date.now() - record.t < 300)
-      element.dispatchEvent(new CustomEvent('pan', {
+      element.dispatchEvent(Object.assign(new CustomEvent('pan'), {
         startX: context.startX,
         startY: context.startY,
         clientX: point.clientX,
@@ -135,7 +135,7 @@ function enableGesture(element){
 
       let isFlick = speed > 2.5
       if(isFlick) {
-        element.dispatchEvent(new CustomEvent('flick', {
+        element.dispatchEvent(Object.assign(new CustomEvent('flick'),, {
           startX: context.startX,
           startY: context.startY,
           clientX: point.clientX,
@@ -143,7 +143,7 @@ function enableGesture(element){
           speed: speed
         }))
       }
-      element.dispatchEvent(new CustomEvent('panend', {
+      element.dispatchEvent(Object.assign(new CustomEvent('panend'), {
         startX: context.startX,
         startY: context.startY,
         clientX: point.clientX,
@@ -154,16 +154,16 @@ function enableGesture(element){
       console.log('panend')
     }
     if(context.isTap){
-      element.dispatchEvent(new CustomEvent('tap', {}))
+      element.dispatchEvent(new CustomEvent('tap'))
     }
     if(context.isPress)
-      element.dispatchEvent(new CustomEvent('pressend', {}))
+      element.dispatchEvent(new CustomEvent('pressend'))
 
     clearTimeout(context.timeoutHandler)
   }
 
   let cancel = (point, context) => {
-    element.dispatchEvent(new CustomEvent('canceled', {}))
+    element.dispatchEvent(new CustomEvent('canceled'))
     clearTimeout(context.timeoutHandler)
   }
 
