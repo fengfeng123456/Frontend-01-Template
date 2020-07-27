@@ -1,11 +1,11 @@
 
+import {enableGesture} from "./gesture";
 import {createElement, Text, Wrapper} from './createElement'
 // import {Carousel} from './Carousel.view'
 
 import {Timeline, Animation} from "./animation";
 import {ease  } from "./cubicBezier";
 
-import {enableGesture} from "./gesture";
 class Carousel{
   constructor() {
     this.children = []
@@ -21,8 +21,38 @@ class Carousel{
     this.children.push(child)
   }
   render(){
-    let children = this.data.map(url => {
-      let element = <img src={url} onStart={() =>timeline.pause()}/>
+    let position = 0
+
+    let timeline = new Timeline
+    // window.xtimeline = timeline
+    timeline.start()
+
+    let nextPicStopHandler = null
+
+    
+
+    let children = this.data.map((url, currentPosition) => {
+
+      let onStart = () => {
+        timeline.pause()
+        clearTimeout(nextPicStopHandler)
+      }
+
+      let onPan = event => {
+        let lastPosition = (currentPosition - 1)
+      }
+
+
+      let element = < img src = {
+        url
+      }
+      onStart = {
+        onStart
+      }
+      enableGesture = {
+        true
+      }
+      />
       // 这里返回的是一个对象，，需要去root才能获得元素
       element.addEventListener('dragstart', event => event.preventDefault())
       return element
@@ -30,11 +60,7 @@ class Carousel{
     let root = <div class="carousel">
       {children}
     </div>
-    let position = 0
-
-    let timeline = new Timeline
-    // window.xtimeline = timeline
-    timeline.start()
+    
 
 
     let nextPic = () =>{
@@ -45,9 +71,9 @@ class Carousel{
       let next = children[nextPosition]
 
       let currentAnimation = new Animation(current.style, 'transform',
-       -100 * position, -100 - 100 * position, 500, 0, ease, v => `translateX(${v}%)`)
+       -100 * position, -100 - 100 * position, 500, 0, ease, v => `translateX(${5*v}px)`)
       let nextAnimation = new Animation(next.style, 'transform',
-         100 - 100 * nextPosition, -100 * nextPosition, 500, 0, ease, v => `translateX(${v}%)`)
+         100 - 100 * nextPosition, -100 * nextPosition, 500, 0, ease, v => `translateX(${5*v}px)`)
 
       timeline.add(currentAnimation)
       timeline.add(nextAnimation)
@@ -57,10 +83,10 @@ class Carousel{
       position = nextPosition
 
       // window.xstopHandler = setTimeout(nextPic, 3000)
-      setTimeout(nextPic, 3000)
+      nextPicStopHandler = setTimeout(nextPic, 3000)
     }
     // 保持第一个停留3s
-    setTimeout(nextPic, 3000)
+    nextPicStopHandler = setTimeout(nextPic, 3000)
 
     // 第一步
     return root

@@ -132,7 +132,7 @@ export function enableGesture(element){
 
       let isFlick = speed > 2.5
       if(isFlick) {
-        element.dispatchEvent(Object.assign(new CustomEvent('flick'),, {
+        element.dispatchEvent(Object.assign(new CustomEvent('flick'), {
           startX: context.startX,
           startY: context.startY,
           clientX: point.clientX,
