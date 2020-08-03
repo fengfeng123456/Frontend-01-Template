@@ -150,7 +150,6 @@ export function enableGesture(element){
         speed: speed,
         isFlick: isFlick
       }))
-      console.log('panend')
     }
     if(context.isTap){
       element.dispatchEvent(new CustomEvent('tap'))

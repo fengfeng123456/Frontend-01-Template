@@ -13,6 +13,11 @@ import {
 } from "./cubicBezier";
 
 
+import css from './carousel.css'
+
+
+
+
 export class Carousel {
   constructor() {
     this.children = []

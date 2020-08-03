@@ -3,7 +3,6 @@ import {
 } from "./gesture";
 
 export function createElement(Cls, attributes, ...children){
-  console.log(arguments)
   
   let o 
   if (typeof Cls === 'string'){
@@ -47,6 +46,9 @@ export class Text {
   mountTo(parent){
     parent.appendChild(this.root)
   }
+  getAttribute(name) {
+    return 
+  }
 }
 
 export class Wrap{
@@ -55,23 +57,33 @@ export class Wrap{
     this.root = document.createElement(type)
   }
   setAttribute(name, value) {
-    console.log('Parent::attribute', name, value)
     this.root.setAttribute(name, value)
 
     if(name.match(/^on([\s\S]+)$/)){
       let eventName = RegExp.$1.replace(/^[\s\S]/, c => c.toLocaleLowerCase())
-      console.log(55,RegExp.$1,eventName,value)
       this.addEventListener(eventName, value)
     }
     if (name === 'enableGesture') {
       enableGesture(this.root)
     }
   }
+
+  getAttribute(name) {
+    return this.root.getAttribute(name)
+  }
+
   appendChild(child){
     this.children.push(child)
   }
   get style(){
     return this.root.style
+  }
+
+  get classList() {
+    return this.root.classList
+  }
+  set innerText(text){
+    return this.root.innerText = text
   }
   addEventListener(type, fn){
     this.root.addEventListener(type, fn)
