@@ -13,6 +13,7 @@ function enableGesture(element){
       contexts[MOUSE_SYMBOL] = Object.create(null)
       start(event, contexts[MOUSE_SYMBOL])
       let mousemove = event => {
+
         move(event, contexts[MOUSE_SYMBOL])
       }
       let mouseend = event => {
@@ -90,8 +91,7 @@ function enableGesture(element){
   }
 
   let move = (point, context) => {
-    let dx = point.clientX - context.startX, dy = point.clientY - point.startY
-
+    let dx = point.clientX - context.startX, dy = point.clientY - context.startY
     if(dx ** 2 + dy ** 2 > 100 && !context.isPan){
       if(context.isPress)
         element.dispatchEvent(new CustomEvent('presscancel'))
@@ -108,7 +108,6 @@ function enableGesture(element){
     }
 
     
-
 
 
     if(context.isPan){
@@ -135,7 +134,7 @@ function enableGesture(element){
 
       let isFlick = speed > 2.5
       if(isFlick) {
-        element.dispatchEvent(Object.assign(new CustomEvent('flick'),, {
+        element.dispatchEvent(Object.assign(new CustomEvent('flick'), {
           startX: context.startX,
           startY: context.startY,
           clientX: point.clientX,
