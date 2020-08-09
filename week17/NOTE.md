@@ -12,7 +12,9 @@
 
 ## 第二课 工具链
 
-yeoman-generator的能力：
+
+## yeoman-generator的能力：
 1. 从用户收集信息的能力
 2. npm的操作能力
 3. 文件模板的操作能力
+
