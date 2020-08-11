@@ -12,3 +12,8 @@
 
 ## [fsevent](https://github.com/fsevents/fsevents)
 
+## 测试
+
+重要的是测试，而不是用什么工具；
+不推荐带UI的业务，写测试用例，主要是基础库；
+
